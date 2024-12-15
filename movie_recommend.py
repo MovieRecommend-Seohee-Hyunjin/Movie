@@ -9,7 +9,8 @@ app = Flask(__name__)
 def showMain():
     return render_template('index.html')
 
-# genre_all 페이지 라우트
+# 장르 -------------------------------
+# genre_all  페이지 라우트
 @app.route('/genre_all/')
 def showgenre_all():
     conn = sqlite3.connect('movie_recommend.db')
@@ -42,9 +43,53 @@ def genre(genre_name):
     conn.close()
 
     return render_template('genre.html', genre_name=genre_name, movies=movies)
+#---------------------------------------------
+# 평점별 영화 라우트
+@app.route('/Rating/<rating_range>')
+def showRating(rating_range):
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+
+    # 평점대에 따른 SQL 쿼리
+    if rating_range == '9점대':
+        cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 9 AND GPA < 10")
+    elif rating_range == '8점대':
+        cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 8 AND GPA < 9")
+    elif rating_range == '7점대':
+        cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 7 AND GPA < 8")
+    else:
+        return "Invalid rating range", 404
+
+    movies = [{'Name': row[0], 'GPA': row[1]} for row in cursor.fetchall()]
+
+    conn.close()
+    return render_template('Rating.html', rating_range=rating_range, movies=movies)
+
+# 모든 평점 보기
+@app.route('/Rating_all/')
+def showRating_all():
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+
+    # 평점대별 영화 가져오기
+    ratings = ['9점대', '8점대', '7점대', '6점대']
+    rating_movies = {}
+    for rating in ratings:
+        if rating == '9점대':
+            cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 9 AND GPA < 10 LIMIT 3")
+        elif rating == '8점대':
+            cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 8 AND GPA < 9 LIMIT 3")
+        elif rating == '7점대':
+            cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 7 AND GPA < 8 LIMIT 3")
+        elif rating == '6점대':
+            cursor.execute("SELECT Name, GPA FROM movie WHERE GPA >= 6 AND GPA < 7 LIMIT 3")
+        rating_movies[rating] = [{'Name': row[0], 'GPA': row[1]} for row in cursor.fetchall()]
+
+    conn.close()
+    return render_template('Rating_all.html', ratings=ratings, rating_movies=rating_movies)
 
 
-
+# -------------------------------------------
 # 연대별 영화 전체 보기
 @app.route('/Date_all/')
 def showDate_all():
@@ -87,6 +132,27 @@ def showDate(decade):
     conn.close()
     return render_template('Date.html', decade=decade, movies=movies)
 
+# 특정 영화의 세부 정보 보기
+@app.route('/movie/<movie_name>')
+def movie(movie_name):
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+
+    # 특정 영화의 정보 가져오기
+    cursor.execute("SELECT Name, Plot, URL, GPA, Year, Genre FROM movie WHERE Name = ?", (movie_name,))
+    movie = cursor.fetchone()
+
+    movie_details = {
+        'Name': movie[0],
+        'Plot': movie[1],
+        'URL': movie[2],
+        'GPA': movie[3],
+        'Year': movie[4],
+        'Genre': movie[5]
+    }
+
+    conn.close()
+    return render_template('movie.html', movie=movie_details)
 
 
 if __name__ == '__main__':
