@@ -36,7 +36,7 @@
             padding: 10px 20px;
             border: none;
             background-color: #4CAF50;
-            color: black; /* 흰색에서 검정으로 변경 */
+            color: white; 
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
@@ -50,8 +50,8 @@
             padding: 10px;
         }
         h3 {
-            color: #000; /* 텍스트 검정 */
-            border-bottom: 2px solid #4CAF50; /* 밑줄 초록색으로 변경 */
+            color: #000; 
+            border-bottom: 2px solid #4CAF50; 
             padding-bottom: 5px;
         }
         ul {
@@ -67,25 +67,43 @@
         }
         ul li a {
             text-decoration: none;
-            color: #000; /* 초록색에서 검정으로 변경 */
+            color: #000;
             font-weight: bold;
         }
         ul li a:hover {
-            color: #3e8e41; /* 초록색으로 유지 */
+            color: #3e8e41; 
+        }
+        .search-history-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .search-history-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .search-history-button a:hover {
+            background-color: #3e8e41;
         }
     </style>
 </head>
 <body>
     <h1>Movie_recommend</h1>
 
-    <!-- 영화 검색 폼 추가 -->
-    <form action="https://www.youtube.com/results" method="get">
+    <!-- 영화 검색 폼 -->
+    <form action="{{ url_for('search_movie') }}" method="get">
         <label for="textinput">영화 검색:</label>
-        <input type="text" id="textinput" name="search_query" placeholder="영화를 검색하세요">
+        <input type="text" id="textinput" name="movie_title" placeholder="영화를 검색하세요" required>
         <input type="submit" value="검색">
     </form>
-    
-    
+
+    <!-- 검색 기록 보기 버튼 -->
+    <div class="search-history-button">
+        <a href="{{ url_for('show_search_history') }}">검색 기록 보기</a>
+    </div>
 
     <div>
         <h3>평점</h3>
