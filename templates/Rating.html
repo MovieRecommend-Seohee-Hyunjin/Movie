@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ rating_range }} Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000; /* 텍스트 기본 색상을 검정으로 설정 */
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white; /* 제목은 흰색으로 유지 */
+            margin: 0;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50; /* 링크는 초록색으로 유지 */
+            font-weight: bold;
+        }
+        a:hover {
+            color: #3e8e41; /* 링크 hover 시 어두운 초록색 */
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4CAF50; /* 뒤로 가기 링크 초록색 */
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #3e8e41; /* 뒤로 가기 링크 hover 시 어두운 초록색 */
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ rating_range }} Movies</h1>
+    <ul>
+        {% for movie in movies %}
+        <li>
+            <a href="{{ url_for('movie', movie_name=movie['Name']) }}">{{ movie['Name'] }} ({{ movie['GPA'] }})</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <a class="back-link" href="{{ url_for('showRating_all') }}">Back</a>
+</body>
+</html>

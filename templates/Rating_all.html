@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies by Rating</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000; /* 텍스트 기본 색상을 검정으로 설정 */
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white; /* 제목은 흰색으로 유지 */
+            margin: 0;
+        }
+        h2 {
+            margin: 0;
+            color: #000; /* 제목을 검정으로 변경 */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50; /* 링크는 초록색으로 유지 */
+            font-weight: bold;
+        }
+        a:hover {
+            color: #3e8e41; /* 링크 hover 시 어두운 초록색 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Movies by Rating</h1>
+    <ul>
+        {% for rating in ratings %}
+        <li>
+            <h2>{{ rating }}</h2>
+            <ul>
+                {% for movie in rating_movies[rating] %}
+                <li>
+                    <a href="{{ url_for('movie', movie_name=movie['Name']) }}">{{ movie['Name'] }} ({{ movie['GPA'] }})</a>
+                </li>
+                {% endfor %}
+                <li><a href="{{ url_for('showRating', rating_range=rating) }}">View All</a></li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
