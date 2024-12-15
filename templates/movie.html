@@ -4,13 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ movie.Name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://via.placeholder.com/1500x800') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgba(255, 255, 255, 0.8); /* 투명한 배경 */
+        }
+        .movie-card {
+            max-width: 600px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: scale(1.03);
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        strong {
+            color: #555;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #3e8e41;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ movie.Name }}</h1>
-    <p><strong>Genre:</strong> {{ movie.Genre }}</p>
-    <p><strong>Year:</strong> {{ movie.Year }}</p>
-    <p><strong>GPA:</strong> {{ movie.GPA }}</p>
-    <p><strong>Plot:</strong> {{ movie.Plot }}</p>
-    <p><a href="{{ movie.URL }}">More Info</a></p>
+    <div class="container">
+        <div class="movie-card">
+            <h1>{{ movie.Name }}</h1>
+            <p><strong>Genre:</strong> {{ movie.Genre }}</p>
+            <p><strong>Year:</strong> {{ movie.Year }}</p>
+            <p><strong>GPA:</strong> {{ movie.GPA }}</p>
+            <p><strong>Plot:</strong> {{ movie.Plot }}</p>
+            <a href="{{ movie.URL }}" class="btn" target="_blank">More Info</a>
+        </div>
+    </div>
 </body>
 </html>
