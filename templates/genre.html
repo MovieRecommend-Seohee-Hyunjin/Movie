@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ genre }} 영화 목록</title>
+</head>
+<body>
+    <h1>{{ genre }} 영화 목록</h1>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <a href="{{ url_for('movie', movie_name=movie.Name) }}">{{ movie.Name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">뒤로가기</a>
+</body>
+</html>
