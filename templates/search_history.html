@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 기록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #000;
+            text-align: center;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        a:hover {
+            color: #3e8e41;
+        }
+        form button {
+            padding: 10px 20px;
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form button:hover {
+            background-color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <h1>검색 기록</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>영화 제목</th>
+                <th>유튜브 링크</th>
+                <th>검색 시간</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie_title, youtube_url, search_time in history %}
+            <tr>
+                <td>{{ movie_title }}</td>
+                <td><a href="{{ youtube_url }}" target="_blank">유튜브에서 보기</a></td>
+                <td>{{ search_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 검색 기록 삭제 버튼 -->
+    <form action="{{ url_for('clear_search_history') }}" method="post">
+        <button type="submit">검색 기록 삭제</button>
+    </form>
+
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('index') }}">홈으로 돌아가기</a>
+    </div>
+</body>
+</html>

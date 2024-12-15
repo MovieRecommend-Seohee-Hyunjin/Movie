@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 결과</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000;
+            text-align: center;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        p {
+            margin: 20px 0;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <h1>검색 결과</h1>
+    <p>영화 제목: <strong>{{ movie_title }}</strong></p>
+    <p>유튜브 링크: 
+        <a href="{{ youtube_url }}" target="_blank">여기를 클릭하여 유튜브에서 보기</a>
+    </p>
+    <p><a href="{{ url_for('index') }}">홈으로 돌아가기</a></p>
+</body>
+</html>
