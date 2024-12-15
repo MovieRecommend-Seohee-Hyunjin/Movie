@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개봉년도</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000; /* 텍스트 색깔 검정 */
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: #fff; /* 흰색 유지 */
+            margin: 0;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #000; /* 검정색 */
+        }
+        li h2 {
+            margin: 0;
+            color: #000; /* 검정색 */
+        }
+        a {
+            text-decoration: none;
+            color: #000; /* 링크 색깔 검정 */
+            font-weight: bold;
+        }
+        a:hover {
+            color: #4CAF50; /* 링크 호버 색깔 */
+        }
+    </style>
+</head>
+<body>
+    <h1>개봉연도</h1>
+    <ul>
+        {% for decade in decades %}
+        <li>
+            <h2>{{ decade }}</h2>
+            <ul>
+                {% for movie in decade_movies[decade] %}
+                <li>
+                    <a href="{{ url_for('movie', movie_name=movie['Name']) }}">{{ movie['Name'] }} ({{ movie['Year'] }})</a>
+                </li>
+                {% endfor %}
+                <li><a href="{{ url_for('showDate', decade=decade) }}">View All</a></li>
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
