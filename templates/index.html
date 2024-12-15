@@ -11,13 +11,13 @@
             margin: 0;
             padding: 0;
             background-color: #f9f9f9;
-            color: #000; /* 글자 색깔 검정 */
+            color: #000; 
         }
         h1 {
             text-align: center;
             padding: 20px;
             background-color: #4CAF50;
-            color: #fff; /* 흰색 유지 */
+            color: #fff; 
             margin: 0;
         }
         form {
@@ -36,7 +36,7 @@
             padding: 10px 20px;
             border: none;
             background-color: #4CAF50;
-            color: white;
+            color: black; /* 흰색에서 검정으로 변경 */
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
@@ -50,8 +50,8 @@
             padding: 10px;
         }
         h3 {
-            color: #4CAF50;
-            border-bottom: 2px solid #4CAF50;
+            color: #000; /* 텍스트 검정 */
+            border-bottom: 2px solid #4CAF50; /* 밑줄 초록색으로 변경 */
             padding-bottom: 5px;
         }
         ul {
@@ -67,11 +67,11 @@
         }
         ul li a {
             text-decoration: none;
-            color: #4CAF50;
+            color: #000; /* 초록색에서 검정으로 변경 */
             font-weight: bold;
         }
         ul li a:hover {
-            color: #3e8e41;
+            color: #3e8e41; /* 초록색으로 유지 */
         }
     </style>
 </head>
@@ -79,11 +79,13 @@
     <h1>Movie_recommend</h1>
 
     <!-- 영화 검색 폼 추가 -->
-    <form action="https://www.google.com/search" method="get">
+    <form action="https://www.youtube.com/results" method="get">
         <label for="textinput">영화 검색:</label>
-        <input type="text" id="textinput" name="q" placeholder="영화를 검색하세요">
+        <input type="text" id="textinput" name="search_query" placeholder="영화를 검색하세요">
         <input type="submit" value="검색">
     </form>
+    
+    
 
     <div>
         <h3>평점</h3>
