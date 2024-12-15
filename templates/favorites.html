@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>즐겨찾기 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <h1>즐겨찾기 목록</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>영화 제목</th>
+                <th>링크</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in favorites %}
+            <tr>
+                <td>{{ movie.Name }}</td>
+                <td><a href="{{ movie.URL }}" target="_blank">More Info</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('index') }}">홈으로 돌아가기</a>
+</body>
+</html>

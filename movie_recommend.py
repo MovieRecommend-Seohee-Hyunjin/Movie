@@ -22,6 +22,13 @@ def init_db():
             search_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS favorites (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            movie_name TEXT NOT NULL,
+            movie_url TEXT NOT NULL
+        )
+    """)
     conn.commit()
     conn.close()
 
@@ -139,23 +146,67 @@ def showRating_all():
     conn.close()
     return render_template('Rating_all.html', ratings=ratings, rating_movies=rating_movies)
 
-# 특정 영화의 세부 정보 보기
+# 즐겨찾기 추가
+@app.route('/add_to_favorites/<movie_name>', methods=['POST'])
+def add_to_favorites(movie_name):
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+    # 해당 영화의 URL 가져오기
+    cursor.execute("SELECT URL FROM movie WHERE Name = ?", (movie_name,))
+    result = cursor.fetchone()
+    if result:
+        movie_url = result[0]
+        cursor.execute("INSERT INTO favorites (movie_name, movie_url) VALUES (?, ?)", 
+                       (movie_name, movie_url))
+        conn.commit()
+    conn.close()
+    return redirect(url_for('show_favorites'))
+
+
+# 즐겨찾기 목록 보기
+@app.route('/favorites')
+def show_favorites():
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT movie_name, movie_url FROM favorites")
+    favorites = [{'Name': row[0], 'URL': row[1]} for row in cursor.fetchall()]
+    conn.close()
+    return render_template('favorites.html', favorites=favorites)
+
+
+# 즐겨찾기 삭제
+@app.route('/delete_favorite/<movie_name>', methods=['POST'])
+def delete_favorite(movie_name):
+    conn = sqlite3.connect('movie_recommend.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM favorites WHERE movie_name = ?", (movie_name,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('show_favorites'))
+
+
+# 영화 세부 정보 페이지
 @app.route('/movie/<movie_name>')
 def movie(movie_name):
     conn = sqlite3.connect('movie_recommend.db')
     cursor = conn.cursor()
     cursor.execute("SELECT Name, Plot, URL, GPA, Year, Genre FROM movie WHERE Name = ?", (movie_name,))
     movie = cursor.fetchone()
-    movie_details = {
-        'Name': movie[0],
-        'Plot': movie[1],
-        'URL': movie[2],
-        'GPA': movie[3],
-        'Year': movie[4],
-        'Genre': movie[5]
-    }
-    conn.close()
-    return render_template('movie.html', movie=movie_details)
+    if movie:
+        movie_details = {
+            'Name': movie[0],
+            'Plot': movie[1],
+            'URL': movie[2],
+            'GPA': movie[3],
+            'Year': movie[4],
+            'Genre': movie[5]
+        }
+        conn.close()
+        return render_template('movie.html', movie=movie_details)
+    else:
+        conn.close()
+        return "Movie not found", 404
 
 if __name__ == '__main__':
+    init_db() #데이터베이스와 테이블 초기화
     app.run(debug=True)

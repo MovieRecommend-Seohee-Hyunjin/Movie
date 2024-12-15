@@ -7,70 +7,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
             margin: 0;
             padding: 0;
-            background: url('https://via.placeholder.com/1500x800') no-repeat center center fixed;
-            background-size: cover;
-            color: #333;
+            text-align: center;
         }
         .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: rgba(255, 255, 255, 0.8); /* 투명한 배경 */
-        }
-        .movie-card {
+            margin: 20px auto;
             max-width: 600px;
+            background-color: #fff;
             padding: 20px;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        .movie-card:hover {
-            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         h1 {
             color: #4CAF50;
-            margin-bottom: 10px;
-            font-size: 32px;
         }
         p {
             font-size: 18px;
-            line-height: 1.6;
             margin: 10px 0;
         }
-        strong {
-            color: #555;
-        }
-        .btn {
+        a.btn, button.btn {
             display: inline-block;
-            margin-top: 15px;
             padding: 10px 20px;
+            margin: 10px 5px;
             background-color: #4CAF50;
             color: #fff;
             text-decoration: none;
+            border: none;
             border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            cursor: pointer;
+            font-size: 16px;
         }
-        .btn:hover {
+        a.btn:hover, button.btn:hover {
             background-color: #3e8e41;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="movie-card">
-            <h1>{{ movie.Name }}</h1>
-            <p><strong>Genre:</strong> {{ movie.Genre }}</p>
-            <p><strong>Year:</strong> {{ movie.Year }}</p>
-            <p><strong>GPA:</strong> {{ movie.GPA }}</p>
-            <p><strong>Plot:</strong> {{ movie.Plot }}</p>
-            <a href="{{ movie.URL }}" class="btn" target="_blank">More Info</a>
-        </div>
+        <h1>{{ movie.Name }}</h1>
+        <p><strong>Genre:</strong> {{ movie.Genre }}</p>
+        <p><strong>Year:</strong> {{ movie.Year }}</p>
+        <p><strong>GPA:</strong> {{ movie.GPA }}</p>
+        <p><strong>Plot:</strong> {{ movie.Plot }}</p>
+        <a href="{{ movie.URL }}" class="btn" target="_blank">More Info</a>
+        
+        <!-- 즐겨찾기 추가 버튼 -->
+        <form action="{{ url_for('add_to_favorites', movie_name=movie.Name) }}" method="post">
+            <button type="submit" class="btn">즐겨찾기 추가</button>
+        </form>
     </div>
 </body>
 </html>
