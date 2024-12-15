@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie_recommend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000; /* 글자 색깔 검정 */
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: #fff; /* 흰색 유지 */
+            margin: 0;
+        }
+        form {
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px;
+        }
+        form input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        form input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        form input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        div {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+        h3 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        ul li a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        ul li a:hover {
+            color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <h1>Movie_recommend</h1>
+
+    <!-- 영화 검색 폼 추가 -->
+    <form action="https://www.google.com/search" method="get">
+        <label for="textinput">영화 검색:</label>
+        <input type="text" id="textinput" name="q" placeholder="영화를 검색하세요">
+        <input type="submit" value="검색">
+    </form>
+
+    <div>
+        <h3>평점</h3>
+        <ul>
+            <li><a href="/Rating/9점대">9점대</a></li>
+            <li><a href="/Rating/8점대">8점대</a></li>
+            <li><a href="/Rating/7점대">7점대</a></li>
+            <li><a href="/Rating_all/">전체 보기</a></li>
+        </ul>
+    </div>
+
+    <div>
+        <h3>장르</h3>
+        <ul>
+            <li><a href="/genre/로맨스">로맨스</a></li>
+            <li><a href="/genre/액션">액션</a></li>
+            <li><a href="/genre/SF">SF</a></li>
+            <li><a href="/genre_all/">전체 보기</a></li>
+        </ul>
+    </div>
+
+    <div>
+        <h3>개봉년도</h3>
+        <ul>
+            <li><a href="/Date/2000s">2000년대</a></li>
+            <li><a href="/Date/2010s">2010년대</a></li>
+            <li><a href="/Date/2020s">2020년대</a></li>
+            <li><a href="/Date_all/">전체 보기</a></li>
+        </ul>
+    </div>
+</body>
+</html>
