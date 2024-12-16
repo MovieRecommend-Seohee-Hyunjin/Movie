@@ -31,32 +31,39 @@ def init_db():
     """)
     conn.commit()
     conn.close()
-
-
+    
 # 검색 결과 저장 및 표시
 @app.route('/search', methods=['GET'])
 def search_movie():
-    movie_title = request.args.get('movie_title')  # 검색창에서 입력된 값
+    movie_title = request.args.get('movie_title')  # 검색창에서 입력된 영화 제목
     youtube_url = f"https://www.youtube.com/results?search_query={movie_title}"  # 유튜브 검색 URL 생성
     
-    # 데이터베이스에 검색 기록 저장
     conn = sqlite3.connect('movie_recommend.db')
     cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS search_history (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            movie_title TEXT NOT NULL,
-            youtube_url TEXT NOT NULL,
-            search_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    cursor.execute("INSERT INTO search_history (movie_title, youtube_url) VALUES (?, ?)", 
-                   (movie_title, youtube_url))
-    conn.commit()
-    conn.close()
 
-    # 검색 결과 페이지로 전달
-    return render_template('search_results.html', movie_title=movie_title, youtube_url=youtube_url)
+    # 데이터베이스에서 영화 존재 여부 확인 (대소문자 무시)
+    cursor.execute("SELECT Name FROM movie WHERE LOWER(Name) = LOWER(?)", (movie_title,))
+    movie = cursor.fetchone()
+
+    if movie:  # 영화가 데이터베이스에 존재하면 영화 설명 페이지로 이동
+        conn.close()
+        return redirect(url_for('movie', movie_name=movie_title))
+    else:  # 영화가 데이터베이스에 없으면 YouTube 검색으로 리다이렉트
+        # 검색 기록 저장
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS search_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                movie_title TEXT NOT NULL,
+                youtube_url TEXT NOT NULL,
+                search_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        cursor.execute("INSERT INTO search_history (movie_title, youtube_url) VALUES (?, ?)", 
+                       (movie_title, youtube_url))
+        conn.commit()
+        conn.close()
+        return redirect(youtube_url)
+
 
 # 검색 기록 표시
 @app.route('/search_history')
@@ -146,22 +153,27 @@ def showRating_all():
     conn.close()
     return render_template('Rating_all.html', ratings=ratings, rating_movies=rating_movies)
 
-# 즐겨찾기 추가
+# 즐겨찾기 추가 (중복 방지)
 @app.route('/add_to_favorites/<movie_name>', methods=['POST'])
 def add_to_favorites(movie_name):
     conn = sqlite3.connect('movie_recommend.db')
     cursor = conn.cursor()
+
     # 해당 영화의 URL 가져오기
     cursor.execute("SELECT URL FROM movie WHERE Name = ?", (movie_name,))
     result = cursor.fetchone()
     if result:
         movie_url = result[0]
-        cursor.execute("INSERT INTO favorites (movie_name, movie_url) VALUES (?, ?)", 
-                       (movie_name, movie_url))
-        conn.commit()
+
+        # 중복 여부 확인
+        cursor.execute("SELECT * FROM favorites WHERE movie_name = ?", (movie_name,))
+        existing = cursor.fetchone()
+        if not existing:
+            cursor.execute("INSERT INTO favorites (movie_name, movie_url) VALUES (?, ?)", 
+                           (movie_name, movie_url))
+            conn.commit()
     conn.close()
     return redirect(url_for('show_favorites'))
-
 
 # 즐겨찾기 목록 보기
 @app.route('/favorites')
@@ -173,7 +185,6 @@ def show_favorites():
     conn.close()
     return render_template('favorites.html', favorites=favorites)
 
-
 # 즐겨찾기 삭제
 @app.route('/delete_favorite/<movie_name>', methods=['POST'])
 def delete_favorite(movie_name):
@@ -183,7 +194,6 @@ def delete_favorite(movie_name):
     conn.commit()
     conn.close()
     return redirect(url_for('show_favorites'))
-
 
 # 영화 세부 정보 페이지
 @app.route('/movie/<movie_name>')

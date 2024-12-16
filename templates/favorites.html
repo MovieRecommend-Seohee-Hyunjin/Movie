@@ -27,6 +27,7 @@
         th, td {
             padding: 10px;
             border: 1px solid #ddd;
+            text-align: center;
         }
         th {
             background-color: #4CAF50;
@@ -39,6 +40,21 @@
         a:hover {
             color: #3e8e41;
         }
+        form button {
+            padding: 5px 10px;
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #d9534f;
+        }
+        .home-link {
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -48,6 +64,7 @@
             <tr>
                 <th>영화 제목</th>
                 <th>링크</th>
+                <th>삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -55,10 +72,17 @@
             <tr>
                 <td>{{ movie.Name }}</td>
                 <td><a href="{{ movie.URL }}" target="_blank">More Info</a></td>
+                <td>
+                    <form action="{{ url_for('delete_favorite', movie_name=movie.Name) }}" method="post" style="display:inline;">
+                        <button type="submit">삭제</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('index') }}">홈으로 돌아가기</a>
+    <div class="home-link">
+        <a href="{{ url_for('index') }}">홈으로 돌아가기</a>
+    </div>
 </body>
 </html>
